@@ -2,25 +2,32 @@ import database from "infra/database.js";
 
 async function status(request, response) {
   const updatedAt = new Date().toISOString();
-  const databaseName = process.env.POSTGRES_DB;
 
-  const databaseValues = (
-    await database.query({
-      text: `SELECT 
-            current_setting('server_version') as server_version,
-            current_setting('max_connections')::int as max_connections,
-            (SELECT count(*)::int FROM pg_stat_activity WHERE datname = $1) as opened_connections;`,
-      values: [databaseName],
-    })
-  ).rows[0];
+  const dataBaseVersionResult = await database.query("SHOW server_version;");
+  const dataBaseVersionValue = dataBaseVersionResult.rows[0].server_version;
+
+  const dataBaseMaxConnectionsResult = await database.query(
+    "SHOW max_connections;",
+  );
+  const dataBaseMaxConnectionsValue =
+    dataBaseMaxConnectionsResult.rows[0].max_connections;
+
+  const databaseName = process.env.POSTGRES_DB;
+  const databaseOpenedConnectionsResult = await database.query({
+    text: "SELECT count(*)::int FROM pg_stat_activity WHERE datname = $1;",
+    values: [databaseName],
+  });
+
+  const databaseOpenedConnectionsValue =
+    databaseOpenedConnectionsResult.rows[0].count;
 
   response.status(200).json({
     updated_at: updatedAt,
     dependencies: {
       database: {
-        server_version: databaseValues.server_version,
-        max_connections: databaseValues.max_connections,
-        opened_connections: databaseValues.opened_connections,
+        version: dataBaseVersionValue,
+        max_connection: parseInt(dataBaseMaxConnectionsValue),
+        opemed_connections: databaseOpenedConnectionsValue,
       },
     },
   });
