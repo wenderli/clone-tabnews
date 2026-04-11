@@ -18,7 +18,7 @@ test("POST to /api/v1/migrations should return 201", async () => {
   expect(responseBody.length).toBeGreaterThan(0);
 });
 
-test("GET to /api/v1/migrations should return 200", async () => {
+test("POST to /api/v1/migrations should return 200", async () => {
   const response2 = await fetch("http://localhost:3000/api/v1/migrations");
   expect(response2.status).toBe(200);
 
