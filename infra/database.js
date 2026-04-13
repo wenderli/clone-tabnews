@@ -5,7 +5,6 @@ async function query(queryObject) {
   try {
     client = await getNewClient();
     const result = await client.query(queryObject);
-    await client.end();
     return result;
   } catch (error) {
     console.error(error);
@@ -42,5 +41,6 @@ function getSSLValues() {
       ca: process.env.POSTGRES_CA,
     };
   }
+
   return process.env.NODE_ENV === "production" ? true : false;
 }
