@@ -25,6 +25,7 @@ async function listPendingMigrations() {
     await dbClient?.end();
   }
 }
+
 async function runPendingMigrations() {
   let dbClient;
 

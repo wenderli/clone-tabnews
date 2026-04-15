@@ -25,14 +25,14 @@ async function clearDatabase() {
   await database.query("drop schema public cascade; create schema public;");
 }
 
-async function runPedingMigrations() {
+async function runPendingMigrations() {
   await migrator.runPendingMigrations();
 }
 
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
-  runPedingMigrations,
+  runPendingMigrations,
 };
 
 export default orchestrator;
