@@ -18,6 +18,7 @@ async function getAuthenticatedUser(providedEmail, providedPassword) {
 
     throw error;
   }
+
   async function findUserByEmail(providedEmail) {
     let storedUser;
 
