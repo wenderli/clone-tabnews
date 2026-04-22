@@ -78,10 +78,9 @@ export class NotFoundError extends Error {
     };
   }
 }
-
 export class UnauthorizedError extends Error {
   constructor({ cause, message, action }) {
-    super(message || "Usuário não autenticado", {
+    super(message || "Usuário não autenticado.", {
       cause,
     });
     this.name = "UnauthorizedError";

@@ -1,6 +1,6 @@
 import user from "models/user.js";
 import password from "models/password.js";
-import { UnauthorizedError } from "infra/errors.js";
+import { NotFoundError, UnauthorizedError } from "infra/errors.js";
 
 async function getAuthenticatedUser(providedEmail, providedPassword) {
   try {
@@ -25,10 +25,14 @@ async function getAuthenticatedUser(providedEmail, providedPassword) {
     try {
       storedUser = await user.findOneByEmail(providedEmail);
     } catch (error) {
-      throw new UnauthorizedError({
-        message: "Email não confere.",
-        action: "Verifique se este dado está correto.",
-      });
+      if (error instanceof NotFoundError) {
+        throw new UnauthorizedError({
+          message: "Email não confere.",
+          action: "Verifique se este dado está correto.",
+        });
+      }
+
+      throw error;
     }
 
     return storedUser;
@@ -46,8 +50,6 @@ async function getAuthenticatedUser(providedEmail, providedPassword) {
         action: "Verifique se este dado está correto.",
       });
     }
-
-    return storedUser;
   }
 }
 

@@ -18,7 +18,7 @@ async function postHandler(request, response) {
     userInputValues.password,
   );
 
-  const newSession = await session.create.create(authenticatedUser.id);
+  const newSession = await session.create(authenticatedUser.id);
 
   const setCookie = cookie.serialize("session_id", newSession.token, {
     path: "/",
@@ -26,7 +26,7 @@ async function postHandler(request, response) {
     secure: process.env.NODE_ENV === "production",
     httpOnly: true,
   });
-  response.postHandler("Set-Cookie", setCookie);
+  response.setHeader("Set-Cookie", setCookie);
 
   return response.status(201).json(newSession);
 }
