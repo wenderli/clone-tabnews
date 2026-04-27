@@ -21,9 +21,6 @@ describe("GET /api/v1/migrations", () => {
         action: 'Verifique se o seu usuário possui a feature "read:migration"',
         status_code: 403,
       });
-
-      expect(Array.isArray(responseBody)).toBe(true);
-      expect(responseBody.length).toBeGreaterThan(0);
     });
   });
 
@@ -31,7 +28,7 @@ describe("GET /api/v1/migrations", () => {
     test("Retrieving pending migrations", async () => {
       const createdUser = await orchestrator.createUser();
       const activatedUser = await orchestrator.activateUser(createdUser);
-      const sessionObject = await orchestrator.createSession(activatedUser);
+      const sessionObject = await orchestrator.createSession(activatedUser.id);
 
       const response = await fetch("http://localhost:3000/api/v1/migrations", {
         headers: {
@@ -49,9 +46,6 @@ describe("GET /api/v1/migrations", () => {
         action: 'Verifique se o seu usuário possui a feature "read:migration"',
         status_code: 403,
       });
-
-      expect(Array.isArray(responseBody)).toBe(true);
-      expect(responseBody.length).toBeGreaterThan(0);
     });
   });
 
@@ -60,7 +54,7 @@ describe("GET /api/v1/migrations", () => {
       const createdUser = await orchestrator.createUser();
       const activatedUser = await orchestrator.activateUser(createdUser);
       await orchestrator.addFeaturesToUser(createdUser, ["read:migration"]);
-      const sessionObject = await orchestrator.createSession(activatedUser);
+      const sessionObject = await orchestrator.createSession(activatedUser.id);
 
       const response = await fetch("http://localhost:3000/api/v1/migrations", {
         headers: {

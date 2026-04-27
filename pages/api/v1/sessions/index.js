@@ -33,7 +33,7 @@ async function postHandler(request, response) {
 
   controller.setSessionCookie(newSession.token, response);
 
-  const secureOutputValues = authorization.filterOupput(
+  const secureOutputValues = authorization.filterOutput(
     authenticatedUser,
     "read:session",
     newSession,
@@ -50,7 +50,7 @@ async function deleteHandler(request, response) {
   const expiredSession = await session.expireById(sessionObject.id);
   controller.clearSessionCookie(response);
 
-  const secureOutputValues = authorization.filterOupput(
+  const secureOutputValues = authorization.filterOutput(
     userTryingToDelete,
     "read:session",
     expiredSession,

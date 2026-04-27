@@ -1,5 +1,5 @@
 import user from "models/user.js";
-import activation from "models/activation";
+import activation from "models/activation.js";
 import orchestrator from "tests/orchestrator.js";
 import webserver from "infra/webserver.js";
 
